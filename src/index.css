@@ -4,12 +4,12 @@
 
 @layer base {
   body {
-    @apply antialiased bg-zinc-100 text-black;
+    @apply antialiased bg-zinc-950 text-white;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   select option {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #171717;
+    color: #ef4444;
   }
 }
