@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased bg-white text-black;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  select option {
+    background-color: #ffffff;
+    color: #000000;
+  }
+}
