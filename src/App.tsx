@@ -11,16 +11,16 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-black text-white">
       {/* Header */}
-      <header className="border-b border-black bg-black sticky top-0 z-10">
+      <header className="border-b border-zinc-600 bg-black sticky top-0 z-10">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
-            <span className="text-white text-xs font-bold tracking-[0.25em] uppercase">Detail</span>
+            <span className="text-zinc-500 text-xs font-bold tracking-[0.25em] uppercase">Detail</span>
             <span className="w-px h-4 bg-zinc-600" />
             <span className="text-zinc-400 text-xs tracking-[0.2em] uppercase">Shop Floor</span>
           </div>
-          <span className="text-zinc-600 text-xs tracking-widest uppercase font-medium">Detailing Ops</span>
+          <span className="text-zink-600 text-xs tracking-widest uppercase font-medium">Detailing Ops</span>
         </div>
       </header>
 
