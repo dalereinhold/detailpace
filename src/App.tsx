@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React from 'react';
+import './index.css';
 import IntakeForm from './components/IntakeForm';
 import Dashboard from './components/Dashboard';
 import StatsDashboard from './components/StatsDashboard';
@@ -11,7 +12,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-zinc-600 text-white">
       {/* Header */}
       <header className="border-b border-black bg-black sticky top-0 z-10">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 py-4 flex items-center justify-between">
