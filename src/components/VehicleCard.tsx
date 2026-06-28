@@ -28,7 +28,10 @@ const SERVICE_COLORS: Record<string, string> = {
 };
 
 function formatCheckinTime(isoString: string): string {
-  return new Date(isoString).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const date = new Date(isoString);
+  const dateStr = date.toLocaleDateString([], { month: 'short', day: 'numeric' });
+  const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return `${dateStr} at ${timeStr}`;
 }
 
 function computeLiveSeconds(vehicle: Vehicle): number {
@@ -267,7 +270,7 @@ export default function VehicleCard({ vehicle, onUpdated }: VehicleCardProps) {
 
         {/* Checkin */}
         <p className="text-zinc-400 text-xs mb-5">
-          In at <span className="font-semibold text-zinc-500">{formatCheckinTime(vehicle.created_at)}</span>
+          Added <span className="font-semibold text-zinc-500">{formatCheckinTime(vehicle.created_at)}</span>
         </p>
 
         {/* Actions */}
