@@ -21,7 +21,18 @@ function computeStats(vehicles: Vehicle[]): Stats {
 
   const byType = {} as Record<VehicleType, TypeStats>;
   for (const type of VEHICLE_TYPES) {
-    const group = completed.filter((v) => v.type === type);
+    // Filter completed vehicles by type and their specific service type rules
+    const group = completed.filter((v) => {
+      if (v.type !== type) return false;
+      if (type === 'New' || type === 'Used') {
+        return v.service_type === 'Full Detail';
+      }
+      if (type === 'Demo') {
+        return v.service_type === 'Quick Detail';
+      }
+      return false;
+    });
+
     const totalSecs = group.reduce((sum, v) => sum + v.net_work_seconds, 0);
     const avgSeconds = group.length > 0 ? Math.round(totalSecs / group.length) : 0;
     byType[type] = {
@@ -66,7 +77,7 @@ export function useStats(refreshTrigger: number) {
     setError(null);
     const { data, error: dbError } = await supabase
       .from('vehicles')
-      .select('status, type, net_work_seconds')
+      .select('status, type, net_work_seconds, service_type')
       .eq('status', 'Completed');
 
     if (dbError) {
