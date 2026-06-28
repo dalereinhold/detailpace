@@ -7,9 +7,4 @@
     @apply antialiased bg-zinc-600 text-white; /* Update this line */
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
-
-  select option {
-    background-color: #171717;
-    color: #ef4444;
-  }
 }
