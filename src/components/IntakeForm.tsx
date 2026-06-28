@@ -178,7 +178,7 @@ export default function IntakeForm({ onVehicleAdded }: IntakeFormProps) {
           className="flex items-center gap-2 bg-black hover:bg-zinc-800 active:bg-zinc-900 disabled:opacity-40 disabled:cursor-not-allowed text-white font-bold text-sm uppercase tracking-widest px-6 py-3 transition-colors rounded-none"
         >
           <Plus className="w-4 h-4" />
-          {loading ? 'Adding...' : 'Add to Queue'}
+          {loading ? 'Adding...' : 'Add Vehicle'}
         </button>
       </form>
     </section>
