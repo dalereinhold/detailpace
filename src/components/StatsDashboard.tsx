@@ -27,7 +27,6 @@ const TYPE_CONFIG: Record<VehicleType, { valueClass: string; barClass: string; b
 
 const TYPES: VehicleType[] = ['New', 'Used', 'Demo'];
 const CONDITIONS: VehicleCondition[] = ['Excellent', 'Good', 'Fair', 'Poor'];
-const STATUSES: VehicleStatus[] = ['In Progress', 'On Break', 'Completed'];
 
 const NOTES_POOL = [
   'Full exterior wash and wax requested.',
@@ -71,11 +70,19 @@ export default function StatsDashboard({ refreshTrigger }: StatsDashboardProps) 
       const netWorkSeconds = Math.floor(Math.random() * (5400 - 900 + 1)) + 900; // 15 mins to 1.5 hours
       const notes = NOTES_POOL[Math.floor(Math.random() * NOTES_POOL.length)];
       
-      // Random license plate (e.g., TX-8392 or ABC-1234)
+      // Swedish license plate (e.g., ABC 123 or ABC 12A)
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      const digits = '0123456789';
+      
       const randomLetters = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]).join('');
-      const randomNumbers = Math.floor(1000 + Math.random() * 9000);
-      const licensePlate = `${randomLetters}-${randomNumbers}`;
+      const randomDigits = Array.from({ length: 2 }, () => digits[Math.floor(Math.random() * digits.length)]).join('');
+      
+      // Last character is either a digit (80% chance) or a letter (20% chance)
+      const lastChar = Math.random() < 0.8 
+        ? digits[Math.floor(Math.random() * digits.length)] 
+        : letters[Math.floor(Math.random() * letters.length)];
+        
+      const licensePlate = `${randomLetters} ${randomDigits}${lastChar}`;
 
       // Random created_at within the last 24 hours
       const hoursAgo = Math.random() * 24;
