@@ -17,17 +17,42 @@ export default function IntakeForm({ onVehicleAdded }: IntakeFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function handleLicensePlateChange(val: string) {
+    // Remove all non-alphanumeric characters and convert to uppercase
+    const clean = val.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+    
+    // Format as "ABC 123" or "ABC 12A" (insert space after 3rd character)
+    let formatted = clean;
+    if (clean.length > 3) {
+      formatted = `${clean.slice(0, 3)} ${clean.slice(3, 6)}`;
+    } else {
+      formatted = clean.slice(0, 3);
+    }
+    
+    setLicensePlate(formatted);
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!licensePlate.trim()) {
+    const trimmed = licensePlate.trim();
+    
+    if (!trimmed) {
       setError('License plate is required.');
       return;
     }
+
+    // Swedish license plate validation: 3 letters, a space, and either 3 digits or 2 digits + 1 letter
+    const swedishPlateRegex = /^[A-Z]{3} \d{2}[A-Z0-9]$/;
+    if (!swedishPlateRegex.test(trimmed)) {
+      setError('Please enter a valid Swedish license plate (e.g., ABC 123 or ABC 12A).');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     const { error: dbError } = await supabase.from('vehicles').insert({
-      license_plate: licensePlate.trim().toUpperCase(),
+      license_plate: trimmed,
       type,
       condition,
       notes: notes.trim() || null,
@@ -62,10 +87,10 @@ export default function IntakeForm({ onVehicleAdded }: IntakeFormProps) {
               id="licensePlate"
               type="text"
               className={`${inputClass} uppercase tracking-widest font-bold text-lg`}
-              placeholder="ABC-1234"
+              placeholder="ABC 123"
               value={licensePlate}
-              onChange={(e) => setLicensePlate(e.target.value.toUpperCase())}
-              maxLength={20}
+              onChange={(e) => handleLicensePlateChange(e.target.value)}
+              maxLength={7}
               autoComplete="off"
             />
           </div>
