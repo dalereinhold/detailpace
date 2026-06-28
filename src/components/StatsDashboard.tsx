@@ -40,7 +40,7 @@ export default function StatsDashboard({ refreshTrigger }: StatsDashboardProps) 
   return (
     <aside className="border border-zinc-200 bg-white overflow-hidden">
       {/* Header */}
-      <div className="flex items-center justify-between gap-2 px-5 py-4 border-b border-zinc-200 bg-zinc-50">
+      <div className="flex items-center justify-between gap-2 px-5 py-4 border-b border-zinc-200 bg-zinc-100">
         <div className="flex items-center gap-2.5">
           <BarChart3 className="w-4 h-4 text-zinc-400" />
           <h2 className="text-sm font-bold uppercase tracking-widest text-black">Statistics</h2>

@@ -45,12 +45,12 @@ export default function IntakeForm({ onVehicleAdded }: IntakeFormProps) {
   }
 
   const inputClass =
-    'w-full bg-white border border-zinc-300 text-black text-base rounded-none px-3 py-3 focus:outline-none focus:border-black transition-colors placeholder-zinc-400';
+    'w-full bg-zinc-100 border border-zinc-300 text-black text-base rounded-none px-3 py-3 focus:outline-none focus:border-black transition-colors placeholder-zinc-400';
   const labelClass = 'block text-zinc-500 text-xs font-semibold uppercase tracking-widest mb-1.5';
 
   return (
     <section className="border border-zinc-200 bg-white">
-      <div className="border-b border-zinc-200 bg-zinc-50 px-6 py-4 flex items-center justify-between">
+      <div className="border-b border-zinc-200 bg-zinc-100 px-6 py-4 flex items-center justify-between">
         <h2 className="text-sm font-bold uppercase tracking-widest text-black">Vehicle Intake</h2>
       </div>
 
