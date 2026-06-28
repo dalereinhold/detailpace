@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { LayoutGrid, Clock, Coffee, CheckCircle2, RefreshCw, Hourglass } from 'lucide-react';
+import { LayoutGrid, Clock, Coffee, CheckCircle2, RefreshCw, Hourglass, Trash2 } from 'lucide-react';
 import { supabase, Vehicle, VehicleStatus } from '../lib/supabase';
 import VehicleCard from './VehicleCard';
 
 interface DashboardProps {
   refreshTrigger: number;
+  onVehiclesUpdated?: () => void;
 }
 
 type FilterValue = VehicleStatus | 'All' | 'Pending';
@@ -21,7 +22,7 @@ function isPending(v: Vehicle) {
   return v.status === 'In Progress' && !v.started_at && v.net_work_seconds === 0;
 }
 
-export default function Dashboard({ refreshTrigger }: DashboardProps) {
+export default function Dashboard({ refreshTrigger, onVehiclesUpdated }: DashboardProps) {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -38,6 +39,29 @@ export default function Dashboard({ refreshTrigger }: DashboardProps) {
     if (dbError) { setError(dbError.message); }
     else { setVehicles((data as Vehicle[]) ?? []); }
     setLoading(false);
+  }
+
+  async function handleClearAll() {
+    if (!confirm('Are you sure you want to delete ALL records from the database? This action cannot be undone.')) return;
+    setLoading(true);
+    setError(null);
+
+    // Delete all rows in Supabase by matching a condition that is always true
+    const { error: dbError } = await supabase
+      .from('vehicles')
+      .delete()
+      .neq('id', '00000000-0000-0000-0000-000000000000');
+
+    if (dbError) {
+      setError(dbError.message);
+      setLoading(false);
+    } else {
+      setVehicles([]);
+      if (onVehiclesUpdated) {
+        onVehiclesUpdated();
+      }
+      setLoading(false);
+    }
   }
 
   useEffect(() => { fetchVehicles(); }, [refreshTrigger]);
@@ -67,13 +91,23 @@ export default function Dashboard({ refreshTrigger }: DashboardProps) {
             {vehicles.length} vehicle{vehicles.length !== 1 ? 's' : ''} in records
           </p>
         </div>
-        <button
-          onClick={fetchVehicles}
-          className="flex items-center gap-2 text-zinc-500 hover:text-black text-xs font-semibold uppercase tracking-widest border border-zinc-200 hover:border-black px-4 py-2.5 transition-colors"
-        >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-          Refresh
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleClearAll}
+            disabled={vehicles.length === 0 || loading}
+            className="flex items-center gap-2 text-red-500 hover:text-red-700 disabled:opacity-40 disabled:hover:text-red-500 text-xs font-semibold uppercase tracking-widest border border-zinc-200 hover:border-red-300 px-4 py-2.5 transition-colors bg-white"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+            Clear All
+          </button>
+          <button
+            onClick={fetchVehicles}
+            className="flex items-center gap-2 text-zinc-500 hover:text-black text-xs font-semibold uppercase tracking-widest border border-zinc-200 hover:border-black px-4 py-2.5 transition-colors bg-white"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        </div>
       </div>
 
       {/* Summary stats */}
@@ -125,7 +159,7 @@ export default function Dashboard({ refreshTrigger }: DashboardProps) {
           ))}
         </div>
       ) : filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24 text-center border border-zinc-100">
+        <div className="flex flex-col items-center justify-center py-24 text-center border border-zinc-100 bg-white">
           <LayoutGrid className="w-8 h-8 text-zinc-200 mb-4" />
           <p className="text-zinc-400 text-sm font-medium uppercase tracking-widest">No Vehicles</p>
           <p className="text-zinc-300 text-xs mt-1">

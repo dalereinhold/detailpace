@@ -33,7 +33,7 @@ export default function App() {
         {/* Main */}
         <div className="flex-1 min-w-0 space-y-8">
           <IntakeForm onVehicleAdded={triggerRefresh} />
-          <Dashboard refreshTrigger={refreshTrigger} />
+          <Dashboard refreshTrigger={refreshTrigger} onVehiclesUpdated={triggerRefresh} />
         </div>
       </div>
     </div>
